@@ -1,5 +1,12 @@
 
 
+## [0.2.1](https://github.com/hyoban/eslint-flat-config/compare/0.2.0...0.2.1) (2024-02-13)
+
+
+### Bug Fixes
+
+* custom configName ([e79d21a](https://github.com/hyoban/eslint-flat-config/commit/e79d21a0f9fdf5516d9ff044af0193fd338cd588))
+
 # [0.2.0](https://github.com/hyoban/eslint-flat-config/compare/0.1.0...0.2.0) (2024-02-13)
 
 
