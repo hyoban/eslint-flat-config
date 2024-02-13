@@ -1,5 +1,16 @@
 
 
+## [1.0.0](https://github.com/hyoban/eslint-flat-config/compare/0.4.2...1.0.0) (2024-02-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* reverse merge order
+
+### Code Refactoring
+
+* reverse merge order ([042ae4b](https://github.com/hyoban/eslint-flat-config/commit/042ae4b8e52e348fb49fdb63fb695c599a27f75c))
+
 ## [0.4.2](https://github.com/hyoban/eslint-flat-config/compare/0.4.1...0.4.2) (2024-02-13)
 
 
