@@ -50,6 +50,7 @@ export type ConfigOptions = {
   files?: string[]
   ignores?: string[]
   ignoreFiles?: string[]
+  configName?: Record<Exclude<keyof PluginInfo, 'pluginName'>, boolean>
 }
 
 function pluginIs(config: ESLintFlatConfig, name: string): boolean {
@@ -120,15 +121,20 @@ const pluginInfoList: PluginInfo[] = [
   },
 ]
 
-function analyzeConfigName(config: ESLintFlatConfig): string {
+function analyzeConfigName(
+  config: ESLintFlatConfig,
+  options: Required<ConfigOptions>,
+): string {
   const ruleNames = Object.keys(config.rules ?? {})
+  const { configName } = options
 
   if (ruleNames.every(name => /^[A-Za-z][A-Za-z-]+[A-Za-z]$/gm.test(name)))
-    return 'ESLint JavaScript Plugin (The beginnings of separating out JavaScript-specific functionality from ESLint.)(https://www.npmjs.com/package/@eslint/js)'
+    // return 'ESLint JavaScript Plugin (The beginnings of separating out JavaScript-specific functionality from ESLint.)(https://www.npmjs.com/package/@eslint/js)'
+    return `ESLint JavaScript Plugin${configName?.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName?.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`
 
   for (const { pluginName, name, description, url } of pluginInfoList) {
     if (pluginIs(config, pluginName))
-      return `${name} (${description})(${url})`
+      return `${configName?.name ? name : ''}${configName?.description ? ` (${description})` : ''}${configName?.url ? `(${url})` : ''}`
   }
 
   return ''
@@ -142,7 +148,7 @@ function create(
   return defu(
     config,
     config?.files ? undefined : { files },
-    config?.name ? undefined : { name: analyzeConfigName(config) },
+    config?.name ? undefined : { name: analyzeConfigName(config, options) },
   )
 }
 
@@ -156,6 +162,11 @@ export function config(
       ignores: GLOB_EXCLUDE,
       ignoreFiles: DEFAULT_IGNORE_FILES,
       files: [DEFAULT_GLOB_SRC],
+      configName: {
+        name: true,
+        description: false,
+        url: false,
+      },
     },
   )
   const { ignores, ignoreFiles } = finalOptions
