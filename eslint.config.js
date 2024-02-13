@@ -35,6 +35,7 @@ export default config(
     },
   },
   [
+    eslintPluginUnicorn.configs['flat/recommended'],
     {
       rules: {
         // we should not restrict how we name our variables
@@ -47,7 +48,6 @@ export default config(
         'unicorn/no-array-reduce': 'off',
       },
     },
-    eslintPluginUnicorn.configs['flat/recommended'],
   ],
   {
     name: 'Import sort',
@@ -68,6 +68,8 @@ export default config(
     },
   },
   [
+    ...tseslint.configs.strictTypeChecked,
+    ...tseslint.configs.stylisticTypeChecked,
     {
       languageOptions: {
         parserOptions: {
@@ -113,7 +115,5 @@ export default config(
         ],
       },
     },
-    ...tseslint.configs.stylisticTypeChecked,
-    ...tseslint.configs.strictTypeChecked,
   ],
 )
