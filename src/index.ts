@@ -127,15 +127,13 @@ const pluginInfoList: PluginInfo[] = [
 function analyzeConfigName(
   config: ESLintFlatConfig,
   options: Required<ConfigOptions>,
-): string {
+) {
   const { configName } = options
 
   for (const { pluginName, name, description, url } of pluginInfoList) {
     if (pluginIs(config, pluginName))
       return `${configName.name ? name : ''}${configName.description ? ` (${description})` : ''}${configName.url ? `(${url})` : ''}`
   }
-
-  return ''
 }
 
 function create(
@@ -143,10 +141,10 @@ function create(
   options: Required<ConfigOptions>,
 ): ESLintFlatConfig {
   const { files } = options
-  return defu(
+  return defu<ESLintFlatConfig, ESLintFlatConfig[]>(
     config,
-    config.files ? undefined : { files },
-    config.name ? undefined : { name: analyzeConfigName(config, options) },
+    config.files ? {} : { files },
+    config.name ? {} : { name: analyzeConfigName(config, options) },
   )
 }
 
@@ -222,7 +220,7 @@ export function config(
     },
     ...configs.map((c) => {
       if (Array.isArray(c))
-        return create(defu({}, ...c), finalOptions)
+        return create(defu({}, ...c.reverse()), finalOptions)
       return create(c, finalOptions)
     }),
   ]
