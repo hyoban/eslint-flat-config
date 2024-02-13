@@ -150,6 +150,11 @@ function create(
   )
 }
 
+const deprecatedJsRules = new Set([
+  'no-extra-semi',
+  'no-mixed-spaces-and-tabs',
+])
+
 export function config(
   options: ConfigOptions,
   ...configs: Array<ESLintFlatConfig | ESLintFlatConfig[]>
@@ -168,7 +173,7 @@ export function config(
       },
     },
   )
-  const { ignores, ignoreFiles, configName } = finalOptions
+  const { ignores, ignoreFiles, configName, rules } = finalOptions
 
   const globalIgnores = defu(
     {
@@ -207,13 +212,13 @@ export function config(
       linterOptions: {
         reportUnusedDisableDirectives: true,
       },
-      rules: {
-        ...js.configs.recommended.rules,
-        // deprecated rules
-        'no-extra-semi': 'off',
-        'no-mixed-spaces-and-tabs': 'off',
-        ...finalOptions.rules,
-      },
+      rules: defu(
+        rules,
+        Object.fromEntries(
+          Object.entries(js.configs.recommended.rules)
+            .filter(([rule]) => !deprecatedJsRules.has(rule)),
+        ),
+      ),
     },
     ...configs.map((c) => {
       if (Array.isArray(c))

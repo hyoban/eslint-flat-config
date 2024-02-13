@@ -1,10 +1,12 @@
 declare module '@eslint/js' {
+  import type { SharedConfig } from '@typescript-eslint/utils/ts-eslint'
+
   export const configs: {
     all: {
-      rules: Record<string, string>
+      rules: Record<string, SharedConfig.RuleEntry>
     }
     recommended: {
-      rules: Record<string, string>
+      rules: Record<string, SharedConfig.RuleEntry>
     }
   }
 }
