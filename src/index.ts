@@ -1,3 +1,4 @@
+import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import { defu } from 'defu'
 import gitignore from 'eslint-config-flat-gitignore'
@@ -48,6 +49,7 @@ const DEFAULT_IGNORE_FILES = [
 ]
 
 export type ConfigOptions = {
+  rules?: FlatConfig.Config['rules']
   files?: string[]
   ignores?: string[]
   ignoreFiles?: string[]
@@ -160,6 +162,7 @@ export function config(
   const finalOptions = defu(
     options,
     {
+      rules: {},
       ignores: GLOB_EXCLUDE,
       ignoreFiles: DEFAULT_IGNORE_FILES,
       files: [DEFAULT_GLOB_SRC],
@@ -207,6 +210,13 @@ export function config(
       },
       linterOptions: {
         reportUnusedDisableDirectives: true,
+      },
+      rules: {
+        ...js.configs.recommended.rules,
+        // deprecated rules
+        'no-extra-semi': 'off',
+        'no-mixed-spaces-and-tabs': 'off',
+        ...finalOptions.rules,
       },
     },
     ...configs.map((c) => {

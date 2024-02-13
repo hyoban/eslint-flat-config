@@ -3,7 +3,6 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import js from '@eslint/js'
 import stylistic from '@stylistic/eslint-plugin'
 import eslintPluginAntfu from 'eslint-plugin-antfu'
 import * as eslintPluginImport from 'eslint-plugin-import'
@@ -18,19 +17,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default config(
   {},
-  [
-    {
-      rules: {
-        // deprecated rules
-        'no-extra-semi': 'off',
-        'no-mixed-spaces-and-tabs': 'off',
-
-        'prefer-template': 'error',
-        'no-console': ['warn', { allow: ['warn', 'error'] }],
-      },
-    },
-    js.configs.recommended,
-  ],
   stylistic.configs['recommended-flat'],
   {
     plugins: {

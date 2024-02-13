@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@eslint/js':
+        specifier: ^8.56.0
+        version: 8.56.0
       '@typescript-eslint/utils':
         specifier: ^7.0.1
         version: 7.0.1(eslint@8.56.0)(typescript@5.3.3)
@@ -21,9 +24,6 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0
     devDependencies:
-      '@eslint/js':
-        specifier: ^8.56.0
-        version: 8.56.0
       '@release-it/conventional-changelog':
         specifier: ^8.0.1
         version: 8.0.1(release-it@17.0.3)
