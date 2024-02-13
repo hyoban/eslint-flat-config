@@ -1,6 +1,7 @@
 import { defu } from 'defu'
 import gitignore from 'eslint-config-flat-gitignore'
 import type { FlatESLintConfig } from 'eslint-define-config'
+import globals from 'globals'
 
 type ESLintFlatConfig = FlatESLintConfig & {
   name?: string
@@ -130,11 +131,11 @@ function analyzeConfigName(
 
   if (ruleNames.every(name => /^[A-Za-z][A-Za-z-]+[A-Za-z]$/gm.test(name)))
     // return 'ESLint JavaScript Plugin (The beginnings of separating out JavaScript-specific functionality from ESLint.)(https://www.npmjs.com/package/@eslint/js)'
-    return `ESLint JavaScript Plugin${configName?.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName?.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`
+    return `ESLint JavaScript Plugin${configName.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`
 
   for (const { pluginName, name, description, url } of pluginInfoList) {
     if (pluginIs(config, pluginName))
-      return `${configName?.name ? name : ''}${configName?.description ? ` (${description})` : ''}${configName?.url ? `(${url})` : ''}`
+      return `${configName.name ? name : ''}${configName.description ? ` (${description})` : ''}${configName.url ? `(${url})` : ''}`
   }
 
   return ''
@@ -147,8 +148,8 @@ function create(
   const { files } = options
   return defu(
     config,
-    config?.files ? undefined : { files },
-    config?.name ? undefined : { name: analyzeConfigName(config, options) },
+    config.files ? undefined : { files },
+    config.name ? undefined : { name: analyzeConfigName(config, options) },
   )
 }
 
@@ -181,9 +182,37 @@ export function config(
     }),
   )
 
-  return [globalIgnores, ...configs.map((c) => {
-    if (Array.isArray(c))
-      return create(defu({}, ...c), finalOptions)
-    return create(c, finalOptions)
-  })]
+  return [
+    globalIgnores,
+    {
+      files: finalOptions.files,
+      languageOptions: {
+        ecmaVersion: 2022,
+        globals: {
+          ...globals.browser,
+          ...globals.es2021,
+          ...globals.node,
+          document: 'readonly',
+          navigator: 'readonly',
+          window: 'readonly',
+        },
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 2022,
+          sourceType: 'module',
+        },
+        sourceType: 'module',
+      },
+      linterOptions: {
+        reportUnusedDisableDirectives: true,
+      },
+    },
+    ...configs.map((c) => {
+      if (Array.isArray(c))
+        return create(defu({}, ...c), finalOptions)
+      return create(c, finalOptions)
+    }),
+  ]
 }

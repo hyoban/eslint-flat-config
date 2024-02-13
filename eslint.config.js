@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
 import stylistic from '@stylistic/eslint-plugin'
 import eslintPluginAntfu from 'eslint-plugin-antfu'
+import * as eslintPluginImport from 'eslint-plugin-import'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import tseslint from 'typescript-eslint'
@@ -12,14 +13,16 @@ import tseslint from 'typescript-eslint'
 import { config } from './dist/index.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const GLOB_JS = '**/*.?([cm])js'
-const GLOB_JSX = '**/*.?([cm])jsx'
 
 export default config(
   {},
   [
     {
       rules: {
+        // deprecated rules
+        'no-extra-semi': 'off',
+        'no-mixed-spaces-and-tabs': 'off',
+
         'prefer-template': 'error',
         'no-console': ['warn', { allow: ['warn', 'error'] }],
       },
@@ -35,10 +38,6 @@ export default config(
       'antfu/consistent-list-newline': 'error',
       'antfu/if-newline': 'error',
       'antfu/top-level-function': 'error',
-
-      'antfu/import-dedupe': 'error',
-      'antfu/no-import-dist': 'error',
-      'antfu/no-import-node-modules-by-path': 'error',
     },
   },
   [
@@ -57,12 +56,21 @@ export default config(
     eslintPluginUnicorn.configs['flat/recommended'],
   ],
   {
+    name: 'Import sort',
     plugins: {
       'simple-import-sort': simpleImportSort,
+      'import': eslintPluginImport,
     },
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      'import/first': 'error',
+      'import/newline-after-import': 'error',
+      'import/no-duplicates': 'error',
+      'antfu/import-dedupe': 'error',
+
+      'antfu/no-import-dist': 'error',
+      'antfu/no-import-node-modules-by-path': 'error',
     },
   },
   [
@@ -112,13 +120,6 @@ export default config(
       },
     },
     ...tseslint.configs.stylisticTypeChecked,
-    ...tseslint.configs.recommendedTypeChecked,
-  ],
-  [
-    {
-      name: 'Disable type check rules for JavaScript files',
-      files: [GLOB_JS, GLOB_JSX],
-    },
-    tseslint.configs.disableTypeChecked,
+    ...tseslint.configs.strictTypeChecked,
   ],
 )
