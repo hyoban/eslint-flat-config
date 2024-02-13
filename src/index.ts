@@ -128,12 +128,7 @@ function analyzeConfigName(
   config: ESLintFlatConfig,
   options: Required<ConfigOptions>,
 ): string {
-  const ruleNames = Object.keys(config.rules ?? {})
   const { configName } = options
-
-  if (ruleNames.every(name => /^[A-Za-z][A-Za-z-]+[A-Za-z]$/gm.test(name)))
-    // return 'ESLint JavaScript Plugin (The beginnings of separating out JavaScript-specific functionality from ESLint.)(https://www.npmjs.com/package/@eslint/js)'
-    return `ESLint JavaScript Plugin${configName.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`
 
   for (const { pluginName, name, description, url } of pluginInfoList) {
     if (pluginIs(config, pluginName))
@@ -173,7 +168,7 @@ export function config(
       },
     },
   )
-  const { ignores, ignoreFiles } = finalOptions
+  const { ignores, ignoreFiles, configName } = finalOptions
 
   const globalIgnores = defu(
     {
@@ -188,6 +183,7 @@ export function config(
   return [
     globalIgnores,
     {
+      name: `ESLint JavaScript Plugin${configName.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`,
       files: finalOptions.files,
       languageOptions: {
         ecmaVersion: 2022,
