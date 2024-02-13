@@ -1,5 +1,12 @@
 
 
+# [0.4.0](https://github.com/hyoban/eslint-flat-config/compare/0.3.1...0.4.0) (2024-02-13)
+
+
+### Features
+
+* add @eslint/js ([16b0c95](https://github.com/hyoban/eslint-flat-config/commit/16b0c95918c87b1ae5ab096dc42d8d419c3d07a4))
+
 ## [0.3.1](https://github.com/hyoban/eslint-flat-config/compare/0.3.0...0.3.1) (2024-02-13)
 
 # [0.3.0](https://github.com/hyoban/eslint-flat-config/compare/0.2.1...0.3.0) (2024-02-13)
