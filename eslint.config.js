@@ -16,7 +16,12 @@ import { config } from './dist/index.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default config(
-  {},
+  {
+    rules: {
+      'prefer-template': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
+  },
   stylistic.configs['recommended-flat'],
   {
     plugins: {
