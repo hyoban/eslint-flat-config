@@ -1,5 +1,7 @@
 
 
+## [0.3.1](https://github.com/hyoban/eslint-flat-config/compare/0.3.0...0.3.1) (2024-02-13)
+
 # [0.3.0](https://github.com/hyoban/eslint-flat-config/compare/0.2.1...0.3.0) (2024-02-13)
 
 
