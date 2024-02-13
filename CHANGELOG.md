@@ -1,5 +1,12 @@
 
 
+## [0.4.1](https://github.com/hyoban/eslint-flat-config/compare/0.4.0...0.4.1) (2024-02-13)
+
+
+### Bug Fixes
+
+* basic js config name ([460225b](https://github.com/hyoban/eslint-flat-config/commit/460225bf44ae328d01ddaa3c0ab3bc6c7358b52b))
+
 # [0.4.0](https://github.com/hyoban/eslint-flat-config/compare/0.3.1...0.4.0) (2024-02-13)
 
 
