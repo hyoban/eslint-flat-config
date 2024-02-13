@@ -1,5 +1,12 @@
 
 
+## [0.4.2](https://github.com/hyoban/eslint-flat-config/compare/0.4.1...0.4.2) (2024-02-13)
+
+
+### Bug Fixes
+
+* filter deprecatedJsRules ([7e39bf3](https://github.com/hyoban/eslint-flat-config/commit/7e39bf3a2a39755972dc206dfd5fbefba318af02))
+
 ## [0.4.1](https://github.com/hyoban/eslint-flat-config/compare/0.4.0...0.4.1) (2024-02-13)
 
 
