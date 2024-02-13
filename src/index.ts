@@ -1,9 +1,9 @@
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import { defu } from 'defu'
 import gitignore from 'eslint-config-flat-gitignore'
-import type { FlatESLintConfig } from 'eslint-define-config'
 import globals from 'globals'
 
-type ESLintFlatConfig = FlatESLintConfig & {
+type ESLintFlatConfig = FlatConfig.Config & {
   name?: string
 }
 

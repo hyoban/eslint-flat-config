@@ -1,3 +1,5 @@
+// @ts-check
+
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -32,6 +34,7 @@ export default config(
   stylistic.configs['recommended-flat'],
   {
     plugins: {
+      // @ts-ignore
       antfu: eslintPluginAntfu,
     },
     rules: {
