@@ -11,13 +11,8 @@
     }
   },
   "hooks": {
-    "before:init": [
-      "pnpm lint",
-      "pnpm typecheck",
-      "pnpm test -- run",
-      "pnpm knip"
-    ],
-    "after:bump": ["pnpm build", "pnpm publint", "pnpm attw"],
+    "before:init": ["pnpm lint", "pnpm typecheck", "pnpm test -- run"],
+    "after:bump": ["pnpm build"],
     "before:release": "git add CHANGELOG.md"
   }
 }
