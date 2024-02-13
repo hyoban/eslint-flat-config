@@ -2,6 +2,10 @@ import { defu } from 'defu'
 import gitignore from 'eslint-config-flat-gitignore'
 import type { FlatESLintConfig } from 'eslint-define-config'
 
+type ESLintFlatConfig = FlatESLintConfig & {
+  name?: string
+}
+
 const DEFAULT_GLOB_SRC = '**/*.?([cm])[jt]s?(x)'
 
 const GLOB_EXCLUDE = [
@@ -48,21 +52,104 @@ export type ConfigOptions = {
   ignoreFiles?: string[]
 }
 
-function create(
-  config: FlatESLintConfig,
-  options: Required<ConfigOptions>,
-): FlatESLintConfig {
-  const { files } = options
+function pluginIs(config: ESLintFlatConfig, name: string): boolean {
+  const pluginNames = Object.keys(config.plugins ?? {})
+  if (
+    (pluginNames.length === 1 && pluginNames[0] === name)
+    || (pluginNames.length > 1 && pluginNames.every(n => n.startsWith(name)))
+  )
+    return true
+  return false
+}
 
-  if (!config?.files)
-    return { ...config, files }
-  return config
+type PluginInfo = {
+  pluginName: string
+  name: string
+  description: string
+  url: string
+}
+
+const pluginInfoList: PluginInfo[] = [
+  {
+    pluginName: '@stylistic',
+    name: 'ESLint Stylistic',
+    description: 'Stylistic Formatting for ESLint',
+    url: 'https://eslint.style',
+  },
+  {
+    pluginName: 'antfu',
+    name: 'eslint-plugin-antfu',
+    description: 'Anthony extended ESLint rules',
+    url: 'https://github.com/antfu/eslint-plugin-antfu',
+  },
+  {
+    pluginName: 'unicorn',
+    name: 'eslint-plugin-unicorn',
+    description: 'More than 100 powerful ESLint rules',
+    url: 'https://github.com/sindresorhus/eslint-plugin-unicorn',
+  },
+  {
+    pluginName: 'simple-import-sort',
+    name: 'eslint-plugin-simple-import-sort',
+    description: 'Easy autofixable import sorting',
+    url: 'https://github.com/lydell/eslint-plugin-simple-import-sort',
+  },
+  {
+    pluginName: '@typescript-eslint',
+    name: 'typescript-eslint',
+    description: 'The tooling that enables ESLint and Prettier to support TypeScript.',
+    url: 'https://typescript-eslint.io',
+  },
+  {
+    pluginName: '@eslint-react',
+    name: 'ESLint React',
+    description: 'A series of composable ESLint rules for libraries and frameworks that use React as a UI runtime.',
+    url: 'https://eslint-react.xyz',
+  },
+  {
+    pluginName: 'react-hooks',
+    name: 'eslint-plugin-react-hooks',
+    description: 'This ESLint plugin enforces the Rules of Hooks',
+    url: 'https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks',
+  },
+  {
+    pluginName: '@next/next',
+    name: 'eslint-plugin-next',
+    description: 'ESLint plugin for Next.js',
+    url: 'https://nextjs.org/docs/app/building-your-application/configuring/eslint#eslint-plugin',
+  },
+]
+
+function analyzeConfigName(config: ESLintFlatConfig): string {
+  const ruleNames = Object.keys(config.rules ?? {})
+
+  if (ruleNames.every(name => /^[A-Za-z][A-Za-z-]+[A-Za-z]$/gm.test(name)))
+    return 'ESLint JavaScript Plugin (The beginnings of separating out JavaScript-specific functionality from ESLint.)(https://www.npmjs.com/package/@eslint/js)'
+
+  for (const { pluginName, name, description, url } of pluginInfoList) {
+    if (pluginIs(config, pluginName))
+      return `${name} (${description})(${url})`
+  }
+
+  return ''
+}
+
+function create(
+  config: ESLintFlatConfig,
+  options: Required<ConfigOptions>,
+): ESLintFlatConfig {
+  const { files } = options
+  return defu(
+    config,
+    config?.files ? undefined : { files },
+    config?.name ? undefined : { name: analyzeConfigName(config) },
+  )
 }
 
 export function config(
   options: ConfigOptions,
-  ...configs: Array<FlatESLintConfig | FlatESLintConfig[]>
-): FlatESLintConfig[] {
+  ...configs: Array<ESLintFlatConfig | ESLintFlatConfig[]>
+): ESLintFlatConfig[] {
   const finalOptions = defu(
     options,
     {
