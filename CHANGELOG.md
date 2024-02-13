@@ -1,5 +1,12 @@
 
 
+# [0.3.0](https://github.com/hyoban/eslint-flat-config/compare/0.2.1...0.3.0) (2024-02-13)
+
+
+### Features
+
+* add default languageOptions and linterOptions ([9d43e9a](https://github.com/hyoban/eslint-flat-config/commit/9d43e9aa6ff362875d736ac67f36752334d9ad5c))
+
 ## [0.2.1](https://github.com/hyoban/eslint-flat-config/compare/0.2.0...0.2.1) (2024-02-13)
 
 
