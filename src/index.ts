@@ -5,7 +5,7 @@ import type { Linter } from 'eslint'
 import gitignore from 'eslint-config-flat-gitignore'
 import globals from 'globals'
 
-type ESLintFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
+export type UnifiedFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
 
 const DEFAULT_GLOB_SRC = '**/*.?([cm])[jt]s?(x)'
 
@@ -48,14 +48,14 @@ const DEFAULT_IGNORE_FILES = [
 ]
 
 export type ConfigOptions = {
-  rules?: FlatConfig.Config['rules']
+  rules?: UnifiedFlatConfig['rules']
   files?: string[]
   ignores?: string[]
   ignoreFiles?: string[]
   configName?: Record<Exclude<keyof PluginInfo, 'pluginName'>, boolean>
 }
 
-function pluginIs(config: ESLintFlatConfig, name: string): boolean {
+function pluginIs(config: UnifiedFlatConfig, name: string): boolean {
   const pluginNames = Object.keys(config.plugins ?? {})
   if (
     (pluginNames.length === 1 && pluginNames[0] === name)
@@ -124,7 +124,7 @@ const pluginInfoList: PluginInfo[] = [
 ]
 
 function analyzeConfigName(
-  config: ESLintFlatConfig,
+  config: UnifiedFlatConfig,
   options: Required<ConfigOptions>,
 ) {
   const { configName } = options
@@ -136,11 +136,11 @@ function analyzeConfigName(
 }
 
 function create(
-  config: ESLintFlatConfig,
+  config: UnifiedFlatConfig,
   options: Required<ConfigOptions>,
-): ESLintFlatConfig {
+): UnifiedFlatConfig {
   const { files } = options
-  return defu<ESLintFlatConfig, ESLintFlatConfig[]>(
+  return defu<UnifiedFlatConfig, UnifiedFlatConfig[]>(
     config,
     config.files ? {} : { files },
     config.name ? {} : { name: analyzeConfigName(config, options) },
@@ -154,8 +154,8 @@ const deprecatedJsRules = new Set([
 
 export function config(
   options: ConfigOptions,
-  ...configs: Array<ESLintFlatConfig | ESLintFlatConfig[]>
-): ESLintFlatConfig[] {
+  ...configs: Array<UnifiedFlatConfig | UnifiedFlatConfig[]>
+): UnifiedFlatConfig[] {
   const finalOptions = defu(
     options,
     {
