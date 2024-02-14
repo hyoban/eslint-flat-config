@@ -51,6 +51,18 @@
     "prepublishOnly": "pnpm run build",
     "release": "release-it"
   },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}"
+    },
+    "hooks": {
+      "before:init": [
+        "pnpm run lint",
+        "pnpm run typecheck",
+        "pnpm run test -- run"
+      ]
+    }
+  },
   "dependencies": {
     "@eslint/js": "^8.56.0",
     "defu": "^6.1.4",

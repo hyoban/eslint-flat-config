@@ -1,8 +1,0 @@
-{
-  "git": {
-    "commitMessage": "chore: release v${version}"
-  },
-  "hooks": {
-    "before:init": ["pnpm lint", "pnpm typecheck", "pnpm test -- run"]
-  }
-}
