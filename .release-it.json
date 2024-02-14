@@ -1,18 +1,8 @@
 {
   "git": {
-    "commitMessage": "chore: release ${version}"
-  },
-  "plugins": {
-    "@release-it/conventional-changelog": {
-      "preset": {
-        "name": "conventionalcommits"
-      },
-      "infile": "CHANGELOG.md"
-    }
+    "commitMessage": "chore: release v${version}"
   },
   "hooks": {
-    "before:init": ["pnpm lint", "pnpm typecheck", "pnpm test -- run"],
-    "after:bump": ["pnpm build"],
-    "before:release": "git add CHANGELOG.md"
+    "before:init": ["pnpm lint", "pnpm typecheck", "pnpm test -- run"]
   }
 }

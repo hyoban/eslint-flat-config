@@ -48,6 +48,7 @@
     "build": "tsup src/index.ts --format cjs,esm --clean --dts",
     "dev": "pnpm build --watch",
     "start": "tsx src/index.ts",
+    "prepublishOnly": "pnpm run build",
     "release": "release-it"
   },
   "dependencies": {
@@ -58,7 +59,6 @@
     "@typescript-eslint/utils": "^7.0.1"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^8.0.1",
     "@stylistic/eslint-plugin": "^1.6.1",
     "@types/node": "^20.11.17",
     "eslint": "^8.56.0",
