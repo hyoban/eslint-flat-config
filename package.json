@@ -1,7 +1,7 @@
 {
   "name": "eslint-flat-config",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "packageManager": "pnpm@8.15.2",
   "description": "Writing eslint flat config more easily",
   "author": "Stephen Zhou <hi@hyoban.cc>",
