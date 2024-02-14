@@ -1,12 +1,11 @@
 import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import { defu } from 'defu'
+import type { Linter } from 'eslint'
 import gitignore from 'eslint-config-flat-gitignore'
 import globals from 'globals'
 
-type ESLintFlatConfig = FlatConfig.Config & {
-  name?: string
-}
+type ESLintFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
 
 const DEFAULT_GLOB_SRC = '**/*.?([cm])[jt]s?(x)'
 
