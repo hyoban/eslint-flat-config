@@ -160,11 +160,12 @@ export async function interopDefault<T>(m: Awaitable<T>): Promise<T extends { de
 
 type MaybeArray<T> = T | T[]
 
-type CreateUnifiedFlatConfig = () => Promise<MaybeArray<UnifiedFlatConfig>> | MaybeArray<UnifiedFlatConfig>
+type CreateUnifiedFlatConfig = () => MaybeArray<UnifiedFlatConfig> | undefined
+type AsyncCreateUnifiedFlatConfig = () => Promise<MaybeArray<UnifiedFlatConfig> | undefined>
 
 export async function config(
   options: ConfigOptions,
-  ...configs: Array<MaybeArray<UnifiedFlatConfig> | CreateUnifiedFlatConfig>
+  ...configs: Array<MaybeArray<UnifiedFlatConfig> | CreateUnifiedFlatConfig | AsyncCreateUnifiedFlatConfig >
 ): Promise<UnifiedFlatConfig[]> {
   const finalOptions = defu(
     options,
@@ -230,15 +231,22 @@ export async function config(
       ),
     },
     ...(
-      await Promise.all(
-        configs.map(async (c) => {
-          if (typeof c === 'function')
-            return mergeConfigs(await c(), finalOptions)
-          return mergeConfigs(c, finalOptions)
-        }),
-      )
+      (await Promise.all(configs.map(async (c) => {
+        if (typeof c === 'function') {
+          const resolved = await c()
+          if (!resolved)
+            return {}
+          return mergeConfigs(resolved, finalOptions)
+        }
+        return mergeConfigs(c, finalOptions)
+      // eslint-disable-next-line unicorn/no-await-expression-member
+      }))).filter(element => nonNullable(element))
     ),
   ]
+}
+
+function nonNullable<T>(value: T): value is NonNullable<T> {
+  return value !== null && value !== undefined
 }
 
 function mergeConfigs(
