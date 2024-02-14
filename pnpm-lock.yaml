@@ -11,9 +11,6 @@ importers:
       '@eslint/js':
         specifier: ^8.56.0
         version: 8.56.0
-      '@types/eslint':
-        specifier: ^8.56.2
-        version: 8.56.2
       '@typescript-eslint/utils':
         specifier: ^7.0.1
         version: 7.0.1(eslint@8.56.0)(typescript@5.3.3)
@@ -30,6 +27,9 @@ importers:
       '@stylistic/eslint-plugin':
         specifier: ^1.6.1
         version: 1.6.1(eslint@8.56.0)(typescript@5.3.3)
+      '@types/eslint':
+        specifier: ^8.56.0
+        version: 8.56.2
       '@types/node':
         specifier: ^20.11.17
         version: 20.11.17
@@ -763,10 +763,11 @@ packages:
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
-    dev: false
+    dev: true
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+    dev: true
 
   /@types/http-cache-semantics@4.0.4:
     resolution: {integrity: sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==}
