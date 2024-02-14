@@ -2,7 +2,6 @@ import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import { defu } from 'defu'
 import type { Linter } from 'eslint'
-import gitignore from 'eslint-config-flat-gitignore'
 import globals from 'globals'
 
 export type UnifiedFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
@@ -152,10 +151,21 @@ const deprecatedJsRules = new Set([
   'no-mixed-spaces-and-tabs',
 ])
 
-export function config(
+export type Awaitable<T> = T | Promise<T>
+export async function interopDefault<T>(m: Awaitable<T>): Promise<T extends { default: infer U } ? U : T> {
+  const resolved = await m
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  return (resolved as any).default || resolved
+}
+
+type MaybeArray<T> = T | T[]
+
+type CreateUnifiedFlatConfig = () => Promise<MaybeArray<UnifiedFlatConfig>> | MaybeArray<UnifiedFlatConfig>
+
+export async function config(
   options: ConfigOptions,
-  ...configs: Array<UnifiedFlatConfig | UnifiedFlatConfig[]>
-): UnifiedFlatConfig[] {
+  ...configs: Array<MaybeArray<UnifiedFlatConfig> | CreateUnifiedFlatConfig>
+): Promise<UnifiedFlatConfig[]> {
   const finalOptions = defu(
     options,
     {
@@ -171,6 +181,8 @@ export function config(
     },
   )
   const { ignores, ignoreFiles, configName, rules } = finalOptions
+
+  const gitignore = await interopDefault(import('eslint-config-flat-gitignore'))
 
   const globalIgnores = defu(
     {
@@ -217,10 +229,23 @@ export function config(
         ),
       ),
     },
-    ...configs.map((c) => {
-      if (Array.isArray(c))
-        return create(defu({}, ...c.reverse()), finalOptions)
-      return create(c, finalOptions)
-    }),
+    ...(
+      await Promise.all(
+        configs.map(async (c) => {
+          if (typeof c === 'function')
+            return mergeConfigs(await c(), finalOptions)
+          return mergeConfigs(c, finalOptions)
+        }),
+      )
+    ),
   ]
+}
+
+function mergeConfigs(
+  c: MaybeArray<UnifiedFlatConfig>,
+  finalOptions: Required<ConfigOptions>,
+): UnifiedFlatConfig {
+  if (Array.isArray(c))
+    return create(defu({}, ...c.reverse()), finalOptions)
+  return create(c, finalOptions)
 }
