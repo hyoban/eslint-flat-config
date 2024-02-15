@@ -32,7 +32,7 @@ jobs:
         run: npm i -g @antfu/ni release-it @release-it/conventional-changelog changelogithub should-semantic-release
       - name: Install
         run: nci
-      - run: if should-semantic-release ; then release-it && changelogithub ; fi
+      - run: if should-semantic-release --verbose ; then release-it --verbose && changelogithub ; fi
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
