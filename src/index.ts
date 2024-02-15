@@ -122,6 +122,12 @@ const pluginInfoList: PluginInfo[] = [
     description: 'ESLint plugin for Next.js',
     url: 'https://nextjs.org/docs/app/building-your-application/configuring/eslint#eslint-plugin',
   },
+  {
+    pluginName: 'tailwindcss',
+    name: 'eslint-plugin-tailwindcss',
+    description: 'ESLint plugin for Tailwind CSS usage',
+    url: 'https://github.com/francoismassart/eslint-plugin-tailwindcss',
+  },
 ]
 
 function analyzeConfigName(
