@@ -55,6 +55,16 @@
     "git": {
       "commitMessage": "chore: release v${version}"
     },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits"
+        }
+      }
+    },
     "hooks": {
       "before:init": [
         "pnpm run lint",
@@ -75,6 +85,7 @@
     "globals": "^14.0.0"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1",
     "@stylistic/eslint-plugin": "^1.6.1",
     "@types/node": "^20.11.17",
     "eslint": "^8.56.0",
