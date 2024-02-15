@@ -9,7 +9,7 @@
 Writing eslint flat config more easily
 
 - [what does it do?](https://github.com/hyoban/eslint-flat-config/blob/main/src/index.ts)
-- [example](https://github.com/hyoban/starter-ts/blob/main/eslint.config.js)
+- [example](https://github.com/hyoban/eslint-flat-config/blob/main/eslint.config.js)
 
 ## License
 
