@@ -140,6 +140,12 @@ const pluginInfoList: PluginInfo[] = [
     description: 'Validate that your components can safely be updated with fast refresh',
     url: 'https://github.com/ArnaudBarre/eslint-plugin-react-refresh',
   },
+  {
+    pluginName: 'validate-jsx-nesting',
+    name: 'eslint-plugin-validate-jsx-nesting',
+    description: 'ESLint Plugin to Validate JSX Nestings',
+    url: 'https://github.com/MananTank/eslint-plugin-validate-jsx-nesting',
+  },
 ]
 
 function analyzeConfigName(
