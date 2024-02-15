@@ -29,10 +29,10 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Setup
-        run: npm i -g @antfu/ni
+        run: npm i -g @antfu/ni release-it @release-it/conventional-changelog
       - name: Install
         run: nci
-      - run: nr release
+      - run: release-it
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
