@@ -6,9 +6,6 @@ permissions:
 
 on:
   workflow_dispatch:
-    # release-it --increment=major --preRelease=beta
-    # increment "major", "minor", "patch", default is "patch"
-    # preRelease "alpha", "beta", "rc", default is null
     inputs:
       increment:
         description: "The release type"
