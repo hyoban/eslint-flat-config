@@ -128,6 +128,12 @@ const pluginInfoList: PluginInfo[] = [
     description: 'ESLint plugin for Tailwind CSS usage',
     url: 'https://github.com/francoismassart/eslint-plugin-tailwindcss',
   },
+  {
+    pluginName: 'jsx-a11y',
+    name: 'eslint-plugin-jsx-a11y',
+    description: 'Static AST checker for a11y rules on JSX elements.',
+    url: 'https://github.com/jsx-eslint/eslint-plugin-jsx-a11y',
+  },
 ]
 
 function analyzeConfigName(
