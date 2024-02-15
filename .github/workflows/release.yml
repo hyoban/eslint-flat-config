@@ -60,14 +60,16 @@ jobs:
       - name: Install
         run: nci
 
-      - run: |
-          if should-semantic-release --verbose ; then
-            if ${{ github.event.inputs.preRelease }}; then
-              release-it --verbose --increment ${{ github.event.inputs.increment }} --preRelease ${{ github.event.inputs.preRelease }} && changelogithub
-            else
-              release-it --verbose --increment ${{ github.event.inputs.increment }} &&
-            changelogithub
-          fi
+      - name: Pre Release
+        run: if should-semantic-release --verbose ; then release-it ${{ github.event.inputs.increment }} --verbose --preRelease ${{ github.event.inputs.preRelease }} && changelogithub ; fi
+        if: github.event.inputs.preRelease
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Release
+        run: if should-semantic-release --verbose ; then release-it ${{ github.event.inputs.increment }} --verbose && changelogithub ; fi
+        if: !github.event.inputs.preRelease
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
