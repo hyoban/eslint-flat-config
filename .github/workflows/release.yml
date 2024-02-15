@@ -29,12 +29,10 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Setup
-        run: npm i -g @antfu/ni @release-it/conventional-changelog
+        run: npm i -g @antfu/ni release-it @release-it/conventional-changelog changelogithub should-semantic-release
       - name: Install
         run: nci
-      - run: npx release-it
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npx changelogithub
+      - run: if should-semantic-release ; then release-it && changelogithub ; fi
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
