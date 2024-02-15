@@ -134,6 +134,12 @@ const pluginInfoList: PluginInfo[] = [
     description: 'Static AST checker for a11y rules on JSX elements.',
     url: 'https://github.com/jsx-eslint/eslint-plugin-jsx-a11y',
   },
+  {
+    pluginName: 'react-refresh',
+    name: 'eslint-plugin-react-refresh',
+    description: 'Validate that your components can safely be updated with fast refresh',
+    url: 'https://github.com/ArnaudBarre/eslint-plugin-react-refresh',
+  },
 ]
 
 function analyzeConfigName(
