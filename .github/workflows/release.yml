@@ -21,12 +21,14 @@ on:
           - "patch"
       preRelease:
         description: "The pre-release type"
-        required: false
+        required: true
+        default: "not"
         type: choice
         options:
           - "alpha"
           - "beta"
           - "rc"
+          - "not"
 
 jobs:
   release:
@@ -62,14 +64,14 @@ jobs:
 
       - name: Pre Release
         run: if should-semantic-release --verbose ; then release-it ${{ github.event.inputs.increment }} --verbose --preRelease ${{ github.event.inputs.preRelease }} && changelogithub ; fi
-        if: "${{ github.event.inputs.preRelease != '' }}"
+        if: "${{ github.event.inputs.preRelease != 'not' }}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Release
         run: if should-semantic-release --verbose ; then release-it ${{ github.event.inputs.increment }} --verbose && changelogithub ; fi
-        if: "${{ github.event.inputs.preRelease == '' }}"
+        if: "${{ github.event.inputs.preRelease == 'not' }}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
