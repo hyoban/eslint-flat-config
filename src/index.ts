@@ -47,12 +47,14 @@ const DEFAULT_IGNORE_FILES = [
 ]
 
 export type ConfigOptions = {
-  rules?: UnifiedFlatConfig['rules']
   files?: string[]
   ignores?: string[]
   ignoreFiles?: string[]
   configName?: Record<Exclude<keyof PluginInfo, 'pluginName'>, boolean>
 }
+
+export type ConfigOptionsWithFlatConfig = ConfigOptions
+  & Pick<FlatConfig.Config, 'rules' | 'languageOptions' | 'linterOptions' | 'settings'>
 
 function pluginIs(config: UnifiedFlatConfig, name: string): boolean {
   const pluginNames = Object.keys(config.plugins ?? {})
@@ -164,13 +166,12 @@ type CreateUnifiedFlatConfig = () => MaybeArray<UnifiedFlatConfig> | undefined
 type AsyncCreateUnifiedFlatConfig = () => Promise<MaybeArray<UnifiedFlatConfig> | undefined>
 
 export async function config(
-  options: ConfigOptions,
+  options: ConfigOptionsWithFlatConfig,
   ...configs: Array<MaybeArray<UnifiedFlatConfig> | CreateUnifiedFlatConfig | AsyncCreateUnifiedFlatConfig >
 ): Promise<UnifiedFlatConfig[]> {
   const finalOptions = defu(
     options,
     {
-      rules: {},
       ignores: GLOB_EXCLUDE,
       ignoreFiles: DEFAULT_IGNORE_FILES,
       files: [DEFAULT_GLOB_SRC],
@@ -181,7 +182,7 @@ export async function config(
       },
     },
   )
-  const { ignores, ignoreFiles, configName, rules } = finalOptions
+  const { ignores, ignoreFiles, configName, files: _files, ...rest } = finalOptions
 
   const gitignore = await interopDefault(import('eslint-config-flat-gitignore'))
 
@@ -197,39 +198,39 @@ export async function config(
 
   return [
     globalIgnores,
-    {
-      name: `ESLint JavaScript Plugin${configName.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`,
-      files: finalOptions.files,
-      languageOptions: {
-        ecmaVersion: 2022,
-        globals: {
-          ...globals.browser,
-          ...globals.es2021,
-          ...globals.node,
-          document: 'readonly',
-          navigator: 'readonly',
-          window: 'readonly',
-        },
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
+    defu <UnifiedFlatConfig, UnifiedFlatConfig[] >(
+      rest,
+      {
+        name: `ESLint JavaScript Plugin${configName.description ? ' (The beginnings of separating out JavaScript-specific functionality from ESLint.)' : ''}${configName.url ? '(https://www.npmjs.com/package/@eslint/js)' : ''}`,
+        files: finalOptions.files,
+        languageOptions: {
           ecmaVersion: 2022,
+          globals: {
+            ...globals.browser,
+            ...globals.es2021,
+            ...globals.node,
+            document: 'readonly',
+            navigator: 'readonly',
+            window: 'readonly',
+          },
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            },
+            ecmaVersion: 2022,
+            sourceType: 'module',
+          },
           sourceType: 'module',
         },
-        sourceType: 'module',
-      },
-      linterOptions: {
-        reportUnusedDisableDirectives: true,
-      },
-      rules: defu(
-        rules,
-        Object.fromEntries(
+        linterOptions: {
+          reportUnusedDisableDirectives: true,
+        },
+        rules: Object.fromEntries(
           Object.entries(js.configs.recommended.rules)
             .filter(([rule]) => !deprecatedJsRules.has(rule)),
         ),
-      ),
-    },
+      },
+    ),
     ...(
       (await Promise.all(configs.map(async (c) => {
         if (typeof c === 'function') {
