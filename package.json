@@ -54,10 +54,6 @@
     "git": {
       "commitMessage": "chore: release v${version}"
     },
-    "github": {
-      "release": true,
-      "releaseName": "${version}"
-    },
     "plugins": {
       "@release-it/conventional-changelog": {
         "preset": {
