@@ -8,16 +8,25 @@ on:
   workflow_dispatch:
     # release-it --increment=major --preRelease=beta
     # increment "major", "minor", "patch", default is "patch"
-    # preRelease "alpha", "beta", "rc", default is ""
+    # preRelease "alpha", "beta", "rc", default is null
     inputs:
       increment:
         description: "The release type"
         required: true
         default: "patch"
+        type: choice
+        options:
+          - "major"
+          - "minor"
+          - "patch"
       preRelease:
         description: "The pre-release type"
         required: false
-        default: ""
+        type: choice
+        options:
+          - "alpha"
+          - "beta"
+          - "rc"
 
 jobs:
   release:
@@ -51,7 +60,14 @@ jobs:
       - name: Install
         run: nci
 
-      - run: if should-semantic-release --verbose ; then release-it --verbose --increment ${{ github.event.inputs.increment }} --preRelease ${{ github.event.inputs.preRelease }} && changelogithub ; fi
+      - run: |
+          if should-semantic-release --verbose ; then
+            if ${{ github.event.inputs.preRelease }}; then
+              release-it --verbose --increment ${{ github.event.inputs.increment }} --preRelease ${{ github.event.inputs.preRelease }} && changelogithub
+            else
+              release-it --verbose --increment ${{ github.event.inputs.increment }} &&
+            changelogithub
+          fi
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
