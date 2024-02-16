@@ -86,10 +86,14 @@ function create(
   options: Required<ConfigOptions>,
 ): UnifiedFlatConfig {
   const { files } = options
+  if (!config.name) {
+    const analyzedName = analyzeConfigName(config, options)
+    if (analyzedName)
+      config.name = analyzedName
+  }
   return defu<UnifiedFlatConfig, UnifiedFlatConfig[]>(
     config,
     config.files ? {} : { files },
-    config.name ? {} : { name: analyzeConfigName(config, options) },
   )
 }
 
