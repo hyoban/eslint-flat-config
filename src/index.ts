@@ -5,49 +5,11 @@ import type { Linter } from 'eslint'
 import globals from 'globals'
 
 import type { PluginInfo } from './consts'
-import { pluginInfoList } from './consts'
+import { DEFAULT_GLOB_SRC, DEFAULT_IGNORE_FILES, GLOB_EXCLUDE, pluginInfoList } from './consts'
+import type { MaybeArray } from './utils'
+import { interopDefault, nonNullable } from './utils'
 
 export type UnifiedFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
-
-const DEFAULT_GLOB_SRC = '**/*.?([cm])[jt]s?(x)'
-
-const GLOB_EXCLUDE = [
-  '**/node_modules',
-  '**/dist',
-  '**/package-lock.json',
-  '**/yarn.lock',
-  '**/pnpm-lock.yaml',
-  '**/bun.lockb',
-
-  '**/output',
-  '**/coverage',
-  '**/temp',
-  '**/.temp',
-  '**/tmp',
-  '**/.tmp',
-  '**/.history',
-  '**/.vitepress/cache',
-  '**/.nuxt',
-  '**/.next',
-  '**/.vercel',
-  '**/.changeset',
-  '**/.idea',
-  '**/.cache',
-  '**/.output',
-  '**/.vite-inspect',
-
-  '**/CHANGELOG*.md',
-  '**/*.min.*',
-  '**/LICENSE*',
-  '**/__snapshots__',
-  '**/auto-import?(s).d.ts',
-  '**/components.d.ts',
-]
-
-const DEFAULT_IGNORE_FILES = [
-  '.gitignore',
-  '.eslintignore',
-]
 
 export type ConfigOptions = {
   files?: string[]
@@ -101,15 +63,6 @@ const deprecatedJsRules = new Set([
   'no-extra-semi',
   'no-mixed-spaces-and-tabs',
 ])
-
-export type Awaitable<T> = T | Promise<T>
-export async function interopDefault<T>(m: Awaitable<T>): Promise<T extends { default: infer U } ? U : T> {
-  const resolved = await m
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-  return (resolved as any).default || resolved
-}
-
-type MaybeArray<T> = T | T[]
 
 type CreateUnifiedFlatConfig = () => MaybeArray<UnifiedFlatConfig> | undefined
 type AsyncCreateUnifiedFlatConfig = () => Promise<MaybeArray<UnifiedFlatConfig> | undefined>
@@ -193,10 +146,6 @@ export async function config(
       }))).filter(element => nonNullable(element))
     ),
   ]
-}
-
-function nonNullable<T>(value: T): value is NonNullable<T> {
-  return value !== null && value !== undefined
 }
 
 function mergeConfigs(
