@@ -2,7 +2,7 @@
   "name": "eslint-flat-config",
   "type": "module",
   "version": "1.1.7",
-  "packageManager": "pnpm@8.15.2",
+  "packageManager": "pnpm@8.15.3",
   "description": "Writing eslint flat config more easily",
   "author": "Stephen Zhou <hi@hyoban.cc>",
   "license": "MIT",
@@ -67,15 +67,14 @@
   },
   "dependencies": {
     "@eslint/js": "^8.56.0",
-    "@types/eslint": "^8.56.0",
-    "@typescript-eslint/utils": "^7.0.1",
+    "@typescript-eslint/utils": "^7.0.2",
     "defu": "^6.1.4",
     "eslint-config-flat-gitignore": "^0.1.3",
     "globals": "^14.0.0"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^1.6.1",
-    "@types/node": "^20.11.17",
+    "@stylistic/eslint-plugin": "^1.6.2",
+    "@types/node": "^20.11.19",
     "eslint": "^8.56.0",
     "eslint-plugin-antfu": "^2.1.2",
     "eslint-plugin-import": "npm:eslint-plugin-i@^2.29.1",
@@ -86,8 +85,8 @@
     "tsup": "^8.0.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^7.0.1",
-    "vitest": "^1.2.2"
+    "typescript-eslint": "^7.0.2",
+    "vitest": "^1.3.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
