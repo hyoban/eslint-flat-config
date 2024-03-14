@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import { defu } from 'defu'
+import type { Linter } from 'eslint'
 import globals from 'globals'
 
 import type { PluginInfo } from './consts'
@@ -8,7 +9,7 @@ import { DEFAULT_GLOB_SRC, DEFAULT_IGNORE_FILES, GLOB_EXCLUDE, pluginInfoList } 
 import type { MaybeArray } from './utils'
 import { interopDefault, nonNullable } from './utils'
 
-export type UnifiedFlatConfig = FlatConfig.Config & { name?: string }
+export type UnifiedFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
 
 export type ConfigOptions = {
   files?: string[]
