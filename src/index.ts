@@ -1,6 +1,6 @@
 import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
-import { defu } from 'defu'
+import { createDefu } from 'defu'
 import type { Linter } from 'eslint'
 import globals from 'globals'
 
@@ -20,6 +20,21 @@ export type ConfigOptions = {
 
 export type ConfigOptionsWithFlatConfig = ConfigOptions
   & Pick<FlatConfig.Config, 'rules' | 'languageOptions' | 'linterOptions' | 'settings'>
+
+const severities = new Set([0, 1, 2, 'off', 'warn', 'error'])
+
+export const defu = createDefu((obj, key, value) => {
+  if (
+    Array.isArray(value)
+    && severities.has(value[0])
+    && Array.isArray(obj[key])
+    && severities.has(obj[key][0])
+  ) {
+    // @ts-expect-error It's fine
+    obj[key] = [...value]
+    return true
+  }
+})
 
 function pluginIs(config: UnifiedFlatConfig, name: string): boolean {
   const pluginNames = Object.keys(config.plugins ?? {})
