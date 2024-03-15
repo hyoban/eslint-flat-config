@@ -3,11 +3,11 @@ declare module '@eslint/js' {
 
   export const configs: {
     all: {
-      rules: Record<string, SharedConfig.RuleEntry>
-    }
+      rules: Record<string, SharedConfig.RuleEntry>,
+    },
     recommended: {
-      rules: Record<string, SharedConfig.RuleEntry>
-    }
+      rules: Record<string, SharedConfig.RuleEntry>,
+    },
   }
 }
 declare module 'eslint-plugin-import'

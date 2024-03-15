@@ -12,10 +12,10 @@ import { interopDefault, nonNullable } from './utils'
 export type UnifiedFlatConfig = (FlatConfig.Config | Linter.FlatConfig) & { name?: string }
 
 export type ConfigOptions = {
-  files?: string[]
-  ignores?: string[]
-  ignoreFiles?: string[]
-  configName?: Record<Exclude<keyof PluginInfo, 'pluginName'>, boolean>
+  files?: string[],
+  ignores?: string[],
+  ignoreFiles?: string[],
+  configName?: Record<Exclude<keyof PluginInfo, 'pluginName'>, boolean>,
 }
 
 export type ConfigOptionsWithFlatConfig = ConfigOptions

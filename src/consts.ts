@@ -1,8 +1,8 @@
 export type PluginInfo = {
-  pluginName: string
-  name: string
-  description: string
-  url: string
+  pluginName: string,
+  name: string,
+  description: string,
+  url: string,
 }
 
 export const pluginInfoList: PluginInfo[] = [
